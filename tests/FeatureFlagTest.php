@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Leet\Flagger;
 use Leet\Models\Feature;
@@ -13,7 +12,7 @@ class FeatureFlagTest extends TestCase
 
     public function testUserCanSeeFeature()
     {
-        $user = factory(User::class)->create();
+        $user = factory(config('flagger.model'))->create();
 
         $feature = factory(Feature::class)->create();
 
@@ -25,7 +24,7 @@ class FeatureFlagTest extends TestCase
 
     public function testUserCanNotSeeFeature()
 	{
-        $user = factory(User::class)->create();
+        $user = factory(config('flagger.model'))->create();
 
         $feature = factory(Feature::class)->create();
 

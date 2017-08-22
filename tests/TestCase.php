@@ -24,4 +24,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'Flagger' => \Leet\Flagger::class,
         ];
     }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('flagger.model', \Illuminate\Foundation\Auth\User::class);
+    }
 }
