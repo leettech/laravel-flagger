@@ -2,26 +2,26 @@
 
 namespace Leet;
 
+use Illuminate\Database\Eloquent\Model;
 use Leet\Models\Feature;
-use Tests\Stubs\User;
 
 class FlaggerService
 {
-	public function flag(User $user, Feature $feature)
+	public function flag(Model $flaggable, Feature $feature)
 	{
-		$user->features()
-            ->attach($feature->id);
+		$feature->flaggables()
+            ->attach($flaggable->id);
 	}
 
-	public function canSee(User $user, Feature $feature)
+	public function canSee(Model $flaggable, Feature $feature)
 	{
-		return $user->features()
-            ->where('features.id', $feature->id)
+		return $feature->flaggables()
+            ->where('flaggables.flaggable_id', $flaggable->id)
             ->exists();
 	}
 
-    public function canNotSee(User $user, Feature $feature)
+    public function canNotSee(Model $flaggable, Feature $feature)
     {
-        return !$this->canSee($user, $feature);
+        return !$this->canSee($flaggable, $feature);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Tests;
 
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Leet\Flagger;
 use Leet\Models\Feature;
-use Tests\Stubs\User;
 
 class FeatureFlagTest extends TestCase
 {
