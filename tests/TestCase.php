@@ -17,4 +17,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [\Leet\FlaggerServiceProvider::class];
     }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Flagger' => \Leet\Flagger::class,
+        ];
+    }
 }
