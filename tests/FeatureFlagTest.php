@@ -18,7 +18,7 @@ class FeatureFlagTest extends TestCase
 
         Flagger::flag($user, $feature);
 
-        $this->assertTrue(Flagger::canSee($user, $feature->name));
-        $this->assertFalse(Flagger::canSee($user, factory(Feature::class)->create()->name));
+        $this->assertTrue(Flagger::hasFeatureEnable($user, $feature->name));
+        $this->assertFalse(Flagger::hasFeatureEnable($user, factory(Feature::class)->create()->name));
     }
 }

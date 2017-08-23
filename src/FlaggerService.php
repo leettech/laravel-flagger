@@ -13,7 +13,7 @@ class FlaggerService
             ->attach($flaggable->id);
 	}
 
-	public function canSee(Model $flaggable, $feature)
+	public function hasFeatureEnable(Model $flaggable, $feature)
 	{
         $feature = Feature::where('name', $feature)
             ->firstOrFail();
