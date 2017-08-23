@@ -3,12 +3,20 @@
 namespace Leet;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Leet\Models\Feature;
 
 class FlaggerMiddleware
 {
-    public function handle($request, \Closure $next)
+    public function handle($request, \Closure $next, $feature)
     {
-        if (!$request->user()) {
+        $user = $request->user();
+
+        if (!$user) {
+            throw new AuthenticationException;
+        }
+
+        if (Flagger::canNotSee($user, $feature)) {
             throw new AuthorizationException;
         }
 

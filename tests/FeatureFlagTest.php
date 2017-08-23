@@ -18,8 +18,8 @@ class FeatureFlagTest extends TestCase
 
         Flagger::flag($user, $feature);
 
-        $this->assertTrue(Flagger::canSee($user, $feature));
-        $this->assertFalse(Flagger::canSee($user, factory(Feature::class)->create()));
+        $this->assertTrue(Flagger::canSee($user, $feature->name));
+        $this->assertFalse(Flagger::canSee($user, factory(Feature::class)->create()->name));
     }
 
     public function testUserCanNotSeeFeature()
@@ -30,7 +30,7 @@ class FeatureFlagTest extends TestCase
 
         Flagger::flag($user, $feature);
 
-        $this->assertTrue(Flagger::canNotSee($user, factory(Feature::class)->create()));
-        $this->assertFalse(Flagger::canNotSee($user, $feature));
+        $this->assertTrue(Flagger::canNotSee($user, factory(Feature::class)->create()->name));
+        $this->assertFalse(Flagger::canNotSee($user, $feature->name));
 	}
 }
