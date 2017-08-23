@@ -22,9 +22,4 @@ class FlaggerService
             ->where('flaggables.flaggable_id', $flaggable->id)
             ->exists();
 	}
-
-    public function canNotSee(Model $flaggable, $feature)
-    {
-        return !$this->canSee($flaggable, $feature);
-    }
 }
