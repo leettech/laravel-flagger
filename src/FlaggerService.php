@@ -18,14 +18,14 @@ class FlaggerService
 	{
 		$this->getFeatureByName($feature)
             ->flaggables()
-            ->attach($flaggable->id);
+            ->attach($flaggable->getKey());
 	}
 
 	public function hasFeatureEnable(Model $flaggable, $feature)
 	{
         return $this->getFeatureByName($feature)
             ->flaggables()
-            ->where('flaggables.flaggable_id', $flaggable->id)
+            ->where('flaggables.flaggable_id', $flaggable->getKey())
             ->exists();
 	}
 
