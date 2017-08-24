@@ -62,7 +62,7 @@ class FlaggerMiddlewareTest extends TestCase
 
         $feature = factory(Feature::class)->create();
 
-        Flagger::flag($user, $feature);
+        Flagger::flag($user, $feature->name);
 
         $request = \Mockery::mock(Request::class);
 
