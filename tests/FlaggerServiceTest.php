@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -20,15 +19,9 @@ class FlaggerServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->builder = Mockery::mock(Builder::class);
-
         $this->user = Mockery::mock(User::class);
 
         $this->feature = Mockery::mock(Feature::class);
-
-        $this->feature
-            ->shouldReceive('where')
-            ->andReturn($this->builder);
     }
 
     /**
@@ -36,8 +29,8 @@ class FlaggerServiceTest extends TestCase
      */
     public function testFlagWithFeatureNotFound()
     {
-        $this->builder
-            ->shouldReceive('firstOrFail')
+        $this->feature
+            ->shouldReceive('findByName')
             ->andThrow(ModelNotFoundException::class);
 
         $flagger = new FlaggerService($this->feature);

@@ -17,22 +17,18 @@ class FlaggerService
     public function flag(Model $flaggable, $feature)
 	{
 		$this->getFeatureByName($feature)
-            ->flaggables()
-            ->attach($flaggable->getKey());
+            ->attachFlaggable($flaggable);
 	}
 
 	public function hasFeatureEnable(Model $flaggable, $feature)
 	{
         return $this->getFeatureByName($feature)
-            ->flaggables()
-            ->where('flaggables.flaggable_id', $flaggable->getKey())
-            ->exists();
+            ->existsFlaggable($flaggable);
 	}
 
     protected function getFeatureByName($name)
     {
         return $this->feature
-            ->where('name', $name)
-            ->firstOrFail();
+            ->findByName($name);
     }
 }

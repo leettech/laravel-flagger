@@ -10,4 +10,23 @@ class Feature extends Model
     {
         return $this->morphedByMany(config('flagger.model'), 'flaggable');
     }
+
+    public function findByName($name)
+    {
+        return $this->where('name', $name)
+            ->firstOrFail();
+    }
+
+    public function attachFlaggable(Model $flaggable)
+    {
+        $this->flaggables()
+            ->attach($flaggable->getKey());
+    }
+
+    public function existsFlaggable(Model $flaggable)
+    {
+        return $this->flaggables()
+            ->where('flaggable_id', $flaggable->getKey())
+            ->exists();
+    }
 }
