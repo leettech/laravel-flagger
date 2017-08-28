@@ -9,6 +9,7 @@ use Leet\Flagger;
 use Leet\FlaggerMiddleware;
 use Leet\Models\Feature;
 use Tests\TestCase;
+use Mockery;
 
 class FlaggerMiddlewareTest extends TestCase
 {
@@ -19,7 +20,7 @@ class FlaggerMiddlewareTest extends TestCase
      */
     public function testUserNotAuthenticated()
     {
-        (new FlaggerMiddleware)->handle(new Request, function() {}, 'notification');
+        (new FlaggerMiddleware)->handle(new Request, function() {}, 'notifications');
     }
 
     /**
@@ -27,15 +28,9 @@ class FlaggerMiddlewareTest extends TestCase
      */
     public function testUserNotAuthorized()
     {
-        $user = factory(config('flagger.model'))->create();
-
         $feature = factory(Feature::class)->create();
 
-        $request = \Mockery::mock(Request::class);
-
-        $request->shouldReceive('user')
-            ->once()
-            ->andReturn($user);
+        $request = $this->getMockRequest();
 
         (new FlaggerMiddleware)->handle($request, function() {}, $feature->name);
     }
@@ -45,37 +40,40 @@ class FlaggerMiddlewareTest extends TestCase
      */
     public function testFeatureNotFound()
     {
-        $user = factory(config('flagger.model'))->create();
+        $request = $this->getMockRequest();
 
-        $request = \Mockery::mock(Request::class);
-
-        $request->shouldReceive('user')
-            ->once()
-            ->andReturn($user);
-
-        (new FlaggerMiddleware)->handle($request, function() {}, 'notification');
+        (new FlaggerMiddleware)->handle($request, function() {}, 'notifications');
     }
 
-    public function testUserCanSeeFeature()
+    public function testHasFeatureEnable()
     {
         $user = factory(config('flagger.model'))->create();
+
+        $request = $this->getMockRequest($user);
 
         $feature = factory(Feature::class)->create();
 
         Flagger::flag($user, $feature->name);
 
-        $request = \Mockery::mock(Request::class);
+        $response = (new FlaggerMiddleware)->handle($request, function() {
+            return new Response;
+        }, $feature->name);
+
+        $this->assertInstanceOf(Response::class, $response);
+    }
+
+    protected function getMockRequest($user = null)
+    {
+        if (!$user) {
+            $user = factory(config('flagger.model'))->create();
+        }
+
+        $request = Mockery::mock(Request::class);
 
         $request->shouldReceive('user')
             ->once()
             ->andReturn($user);
 
-        $response = new Response;
-
-        $response = (new FlaggerMiddleware)->handle($request, function() use ($response) {
-            return $response;
-        }, $feature->name);
-
-        $this->assertInstanceOf(Response::class, $response);
+        return $request;
     }
 }

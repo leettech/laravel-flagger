@@ -4,7 +4,6 @@ namespace Leet;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
-use Leet\Models\Feature;
 
 class FlaggerMiddleware
 {

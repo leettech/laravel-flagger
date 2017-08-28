@@ -12,7 +12,7 @@ class CreateFlaggablesTable extends Migration
 			$table->increments('id');
             $table->integer('feature_id')->unsigned();
             $table->integer('flaggable_id')->unsigned();
-            $table->integer('flaggable_type');
+            $table->string('flaggable_type');
 			$table->timestamps();
 		});
 	}

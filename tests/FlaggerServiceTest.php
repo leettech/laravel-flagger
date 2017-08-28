@@ -3,39 +3,22 @@
 namespace Tests;
 
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Leet\Flagger;
-use Leet\FlaggerService;
 use Leet\Models\Feature;
-use Mockery;
 
 class FlaggerServiceTest extends TestCase
 {
     use DatabaseMigrations;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->user = Mockery::mock(User::class);
-
-        $this->feature = Mockery::mock(Feature::class);
-    }
 
     /**
      * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function testFlagWithFeatureNotFound()
     {
-        $this->feature
-            ->shouldReceive('findByName')
-            ->andThrow(ModelNotFoundException::class);
+        $user = factory(config('flagger.model'))->create();
 
-        $flagger = new FlaggerService($this->feature);
-
-        $flagger->flag($this->user, 'notifications');
+        Flagger::flag($user, 'notifications');
     }
 
     public function testFlag()
