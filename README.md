@@ -4,6 +4,7 @@ Flagger component is a package that has been designed to help you enable feature
 
 * [Version Compatibility](#version-compatibility)
 * [Installation](#installation)
+* [Configuration](#configuration)
 * [Usage](#usage)
 
 ## Version Compatibility
@@ -32,4 +33,26 @@ Above installation can also be simplify by using the following command:
 
 ```sh
 composer require "leettech/laravel-flagger=~1.0"
+```
+
+## Configuration
+
+After installing the Flagger package, register the FlaggerServiceProvider in your config/app.php configuration file:
+
+```php
+'providers' => [
+    // Other service providers...
+    
+    Leet\Providers\FlaggerServiceProvider::class,
+],
+```
+
+Also, add the Flagger facade to the aliases array in your app configuration file:
+
+```php
+'aliases' => [
+    // Other aliases...
+
+    'Flagger' => Leet\Facades\Flagger::class,
+],
 ```
