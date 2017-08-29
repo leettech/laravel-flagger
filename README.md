@@ -19,17 +19,17 @@ Laravel  | Flagger
 
 ## Installation
 
-To install through composer, simply put the following in your `composer.json` file:
+To install through composer, simply add the following in your `composer.json` file:
 
 ```json
 {
-    "require": {
-        "leettech/laravel-flagger": "~1.0"
-    }
+	"require": {
+		"leettech/laravel-flagger": "~1.0"
+	}
 }
 ```
 
-And then run `composer install` from the terminal.
+And then run `composer install`.
 
 ### Quick Installation
 
@@ -45,8 +45,8 @@ After installing the Flagger package, register the FlaggerServiceProvider in you
 
 ```php
 'providers' => [
-    // Other service providers...
-    Leet\Providers\FlaggerServiceProvider::class,
+	// Other service providers...
+	Leet\Providers\FlaggerServiceProvider::class,
 ],
 ```
 
@@ -54,8 +54,8 @@ Also, add the Flagger facade to the aliases array in your app configuration file
 
 ```php
 'aliases' => [
-    // Other aliases...
-    'Flagger' => Leet\Facades\Flagger::class,
+	// Other aliases...
+	'Flagger' => Leet\Facades\Flagger::class,
 ],
 ```
 
@@ -79,8 +79,8 @@ First of all, make sure you have inserted your features in the `features` table 
 
 ```php
 \Leet\Models\Feature::create([
-    'name' => 'notifications',
-    'description' => 'Notifications feature'
+	'name' => 'notifications',
+	'description' => 'Notifications feature'
 ]);
 ```
 
@@ -97,7 +97,7 @@ You can also add `Leet\Models\FlaggerTrait` to the model in order to make flagge
 ```php
 class User extends Model
 {
-    use \Leet\Models\FlaggerTrait;
+	use \Leet\Models\FlaggerTrait;
 }
 $user = \App\User::first();
 $user->flag('notifications');
@@ -109,7 +109,7 @@ Anywhere in the application, you can check if a user has access to a feature:
 
 ```php
 if ($user->hasFeatureEnabled('notifications')) {
-    doSomething();
+	doSomething();
 }
 ```
 
@@ -119,8 +119,8 @@ To use the FlaggerMiddleware, you have to declare it in the application kernel:
 
 ```php
 protected $routeMiddleware = [
-    // Other middleware...
-    'flagger' => \Leet\Middleware\FlaggerMiddleware::class,
+	// Other middleware...
+	'flagger' => \Leet\Middleware\FlaggerMiddleware::class,
 ];
 ```
 
@@ -132,8 +132,8 @@ Route::get('notifications', 'NotificationsController@index')->middleware('flagge
 or
 ```php
 Route::group(['middleware' => 'flagger:notifications'], function () {
-    Route::get('notifications', 'NotificationsController@index');
-    Route::post('notifications', 'NotificationsController@store')
+	Route::get('notifications', 'NotificationsController@index');
+	Route::post('notifications', 'NotificationsController@store')
 });
 ```
 
