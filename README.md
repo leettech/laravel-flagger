@@ -1,6 +1,6 @@
 Laravel Flagger
 ==============
-Flagger component is a package that has been designed to help you on enabling feature flags in Laravel projects.
+Flagger is a package that has been designed to help you on enabling feature flags in Laravel projects.
 
 * [Version Compatibility](#version-compatibility)
 * [Installation](#installation)
