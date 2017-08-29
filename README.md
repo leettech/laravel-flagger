@@ -7,7 +7,7 @@ Flagger component is a package that has been designed to help you enable feature
 * [Configuration](#configuration)
 * [Usage](#usage)
     * [flag](#flag)
-    * [hasFeatureEnable](#hasfeatureenable)
+    * [hasFeatureEnabled](#hasfeatureenabled)
     * [FlaggerMiddleware](#flaggermiddleware)
     * [My Features](#my-features)
 
@@ -112,13 +112,13 @@ $user->flag('notifications');
 Anywhere in the application, you can check if a user has access to a feature:
 
 ```php
-if (\Flagger::hasFeatureEnable($user, 'notifications')) {
+if (\Flagger::hasFeatureEnabled($user, 'notifications')) {
     doSomething();
 }
 
 // or
 
-if ($user->hasFeatureEnable('notifications')) {
+if ($user->hasFeatureEnabled('notifications')) {
     doSomething();
 }
 ```
