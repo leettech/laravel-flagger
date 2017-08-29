@@ -7,6 +7,7 @@ Flagger component is a package that has been designed to help you enable feature
 * [Configuration](#configuration)
 * [Usage](#usage)
     * [flag](#flag)
+    * [hasFeatureEnable](#hasFeatureEnable)
 
 ## Version Compatibility
 
@@ -102,4 +103,20 @@ class User extends Model
 $user = \App\User::first();
 
 $user->flag('notifications');
+```
+
+### hasFeatureEnable
+
+Anywhere in the application, you can check if a user has access to a feture:
+
+```php
+    if (\Flagger::hasFeatureEnable($user, 'notifications')) {
+        doSomething();
+    }
+    
+    // or
+    
+    if ($user->hasFeatureEnable('notifications')) {
+        doSomething();
+    }
 ```
