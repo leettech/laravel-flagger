@@ -15,6 +15,18 @@ class FlaggerMiddlewareTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->user = factory(config('flagger.model'))->create();
+
+        $this->request = Mockery::mock(Request::class);
+
+        $this->request->shouldReceive('user')
+            ->andReturn($this->user);
+    }
+
     /**
      * @expectedException Illuminate\Auth\AuthenticationException
      */
@@ -30,9 +42,7 @@ class FlaggerMiddlewareTest extends TestCase
     {
         $feature = factory(Feature::class)->create();
 
-        $request = $this->getMockRequest();
-
-        (new FlaggerMiddleware)->handle($request, function() {}, $feature->name);
+        (new FlaggerMiddleware)->handle($this->request, function() {}, $feature->name);
     }
 
     /**
@@ -40,40 +50,19 @@ class FlaggerMiddlewareTest extends TestCase
      */
     public function testFeatureNotFound()
     {
-        $request = $this->getMockRequest();
-
-        (new FlaggerMiddleware)->handle($request, function() {}, 'notifications');
+        (new FlaggerMiddleware)->handle($this->request, function() {}, 'notifications');
     }
 
-    public function testHasFeatureEnable()
+    public function testHasFeatureEnabled()
     {
-        $user = factory(config('flagger.model'))->create();
-
-        $request = $this->getMockRequest($user);
-
         $feature = factory(Feature::class)->create();
 
-        Flagger::flag($user, $feature->name);
+        Flagger::flag($this->user, $feature->name);
 
-        $response = (new FlaggerMiddleware)->handle($request, function() {
+        $response = (new FlaggerMiddleware)->handle($this->request, function() {
             return new Response;
         }, $feature->name);
 
         $this->assertInstanceOf(Response::class, $response);
-    }
-
-    protected function getMockRequest($user = null)
-    {
-        if (!$user) {
-            $user = factory(config('flagger.model'))->create();
-        }
-
-        $request = Mockery::mock(Request::class);
-
-        $request->shouldReceive('user')
-            ->once()
-            ->andReturn($user);
-
-        return $request;
     }
 }
