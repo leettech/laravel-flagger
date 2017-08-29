@@ -1,6 +1,6 @@
-Laravel Feature Flag
+Laravel Flagger
 ==============
-Flagger component is a package that has been designed to help you enable feature flags in Laravel projects.
+Flagger component is a package that has been designed to help you on enabling feature flags in Laravel projects.
 
 * [Version Compatibility](#version-compatibility)
 * [Installation](#installation)
@@ -9,14 +9,14 @@ Flagger component is a package that has been designed to help you enable feature
     * [flag](#flag)
     * [hasFeatureEnabled](#hasfeatureenabled)
     * [FlaggerMiddleware](#flaggermiddleware)
-    * [My Features](#my-features)
+    * [Getting enabled features for a model](#getting-enabled-features-for-a-model)
 
 ## Version Compatibility
 
 Laravel  | Flagger
 :---------|:----------
  5.3.x    | 1.x.x
- 
+
 ## Installation
 
 To install through composer, simply put the following in your `composer.json` file:
@@ -33,7 +33,7 @@ And then run `composer install` from the terminal.
 
 ### Quick Installation
 
-Above installation can also be simplify by using the following command:
+The above installation can also be simplified by using the following command:
 
 ```sh
 composer require "leettech/laravel-flagger=~1.0"
@@ -46,7 +46,6 @@ After installing the Flagger package, register the FlaggerServiceProvider in you
 ```php
 'providers' => [
     // Other service providers...
-    
     Leet\Providers\FlaggerServiceProvider::class,
 ],
 ```
@@ -56,12 +55,11 @@ Also, add the Flagger facade to the aliases array in your app configuration file
 ```php
 'aliases' => [
     // Other aliases...
-
     'Flagger' => Leet\Facades\Flagger::class,
 ],
 ```
 
-Then run migration to create tables features and flaggables:
+Then run the migration script to create `features` and `flaggables` tables:
 
 ```sh
 php artisan migrate
@@ -73,51 +71,43 @@ Publish the package configuration:
 php artisan vendor:publish --provider="Leet\Providers\FlaggerServiceProvider"
 ```
 
-And setup  what model it will be used in your config/flagger.php configuration file.
+And, in your `config/flagger.php` configuration file, specify which model will have feature flags associated to it (by default it's set to `App\User::class`).
 
 ## Usage
 
-### flag
-
-First, make sure you create yours features in features table. You can use the Model ```Leet\Models\Feature``` for this.
-
-After that use ```\Flagger::flag($flaggable, $feature)``` to attach one feature in to model:
+First of all, make sure you have inserted your features in the `features` table in the database. You can use the model `Leet\Models\Feature` for this:
 
 ```php
 \Leet\Models\Feature::create([
     'name' => 'notifications',
     'description' => 'Notifications feature'
 ]);
+```
 
+### flag
+Use `\Flagger::flag($flaggable, $feature)` to attach a feature to a model:
+
+```php
 $user = \App\User::first();
-
 \Flagger::flag($user, 'notifications');
 ```
 
-You can also add ```Leet\Models\FlaggerTrait``` in User Model:
+You can also add `Leet\Models\FlaggerTrait` to the model in order to make flagger methods available from it:
 
 ```php
 class User extends Model
 {
     use \Leet\Models\FlaggerTrait;
 }
-
 $user = \App\User::first();
-
 $user->flag('notifications');
 ```
 
-### hasFeatureEnable
+### hasFeatureEnabled
 
 Anywhere in the application, you can check if a user has access to a feature:
 
 ```php
-if (\Flagger::hasFeatureEnabled($user, 'notifications')) {
-    doSomething();
-}
-
-// or
-
 if ($user->hasFeatureEnabled('notifications')) {
     doSomething();
 }
@@ -125,12 +115,11 @@ if ($user->hasFeatureEnabled('notifications')) {
 
 ### FlaggerMiddleware
 
-To use the FlaggerMiddleware, you need to declare it in the application kernel:
+To use the FlaggerMiddleware, you have to declare it in the application kernel:
 
 ```php
 protected $routeMiddleware = [
     // Other middleware...
-    
     'flagger' => \Leet\Middleware\FlaggerMiddleware::class,
 ];
 ```
@@ -139,17 +128,20 @@ And on any authenticated route:
 
 ```php
 Route::get('notifications', 'NotificationsController@index')->middleware('flagger:notifications');
-
-// or
-
-Route::group(['middleware' => 'flagger:notifications'], function () {});
+```
+or
+```php
+Route::group(['middleware' => 'flagger:notifications'], function () {
+    Route::get('notifications', 'NotificationsController@index');
+    Route::post('notifications', 'NotificationsController@store')
+});
 ```
 
-### My Features
+### Getting enabled features for a model
 
-Make sure to add ```Leet\Models\FlaggerTrait``` in your User Model:
+By adding ```Leet\Models\FlaggerTrait``` to your model, you are able to access its enabled features:
 
 ```php
-// returns the features i have access to
+// returns the features a user have access to
 $user->features;
 ```
