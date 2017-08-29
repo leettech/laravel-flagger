@@ -2,9 +2,9 @@
 
 namespace Tests\Stubs;
 
-use Leet\Models\HasFeature;
+use Leet\Models\FlaggerTrait;
 
 class User extends \Illuminate\Foundation\Auth\User
 {
-    use HasFeature;
+    use FlaggerTrait;
 }
