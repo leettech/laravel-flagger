@@ -8,6 +8,7 @@ Flagger component is a package that has been designed to help you enable feature
 * [Usage](#usage)
     * [flag](#flag)
     * [hasFeatureEnable](#hasFeatureEnable)
+    * [FlaggerMiddleware](#FlaggerMiddleware)
 
 ## Version Compatibility
 
@@ -107,16 +108,38 @@ $user->flag('notifications');
 
 ### hasFeatureEnable
 
-Anywhere in the application, you can check if a user has access to a feture:
+Anywhere in the application, you can check if a user has access to a feature:
 
 ```php
-    if (\Flagger::hasFeatureEnable($user, 'notifications')) {
-        doSomething();
-    }
+if (\Flagger::hasFeatureEnable($user, 'notifications')) {
+    doSomething();
+}
+
+// or
+
+if ($user->hasFeatureEnable('notifications')) {
+    doSomething();
+}
+```
+
+### FlaggerMiddleware
+
+To use the FlaggerMiddleware, you need to declare it in the application kernel:
+
+```php
+protected $routeMiddleware = [
+    // Other middleware...
     
-    // or
-    
-    if ($user->hasFeatureEnable('notifications')) {
-        doSomething();
-    }
+    'flagger' => \Leet\Middleware\FlaggerMiddleware::class,
+];
+```
+
+And on any authenticated route:
+
+```php
+Route::get('notifications', 'NotificationsController@index')->middleware('flagger:notifications');
+
+// or
+
+Route::group(['middleware' => 'flagger:notifications'], function () {});
 ```
