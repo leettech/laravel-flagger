@@ -2,7 +2,7 @@
 
 namespace Leet\Models;
 
-use Leet\Flagger;
+use Flagger;
 
 trait HasFeature
 {

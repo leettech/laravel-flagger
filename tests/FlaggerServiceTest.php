@@ -4,7 +4,7 @@ namespace Tests;
 
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Leet\Flagger;
+use Flagger;
 use Leet\Models\Feature;
 
 class FlaggerServiceTest extends TestCase

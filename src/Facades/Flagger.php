@@ -1,9 +1,9 @@
 <?php
 
-namespace Leet;
+namespace Leet\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Leet\FlaggerService;
+use Leet\Services\FlaggerService;
 
 class Flagger extends Facade
 {

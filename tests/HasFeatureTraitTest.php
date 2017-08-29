@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Leet\Flagger;
+use Flagger;
 use Leet\Models\Feature;
 
 class HasFeatureTraitTest extends TestCase

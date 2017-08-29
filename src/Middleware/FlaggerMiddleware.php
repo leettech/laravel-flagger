@@ -1,9 +1,10 @@
 <?php
 
-namespace Leet;
+namespace Leet\Middleware;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Flagger;
 
 class FlaggerMiddleware
 {

@@ -15,13 +15,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getPackageProviders($app)
     {
-        return [\Leet\FlaggerServiceProvider::class];
+        return [\Leet\Providers\FlaggerServiceProvider::class];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Flagger' => \Leet\Flagger::class,
+            'Flagger' => \Leet\Facades\Flagger::class,
         ];
     }
 

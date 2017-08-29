@@ -1,6 +1,6 @@
 <?php
 
-namespace Leet;
+namespace Leet\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Leet\Models\Feature;
