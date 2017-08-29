@@ -9,6 +9,7 @@ Flagger component is a package that has been designed to help you enable feature
     * [flag](#flag)
     * [hasFeatureEnable](#hasfeatureenable)
     * [FlaggerMiddleware](#flaggermiddleware)
+    * [My Features](#my-features)
 
 ## Version Compatibility
 
