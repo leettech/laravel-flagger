@@ -17,8 +17,8 @@ trait FlaggerTrait
         Flagger::flag($this, $feature);
     }
 
-    public function hasFeatureEnable($feature)
+    public function hasFeatureEnabled($feature)
     {
-        return Flagger::hasFeatureEnable($this, $feature);
+        return Flagger::hasFeatureEnabled($this, $feature);
     }
 }

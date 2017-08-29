@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Exception;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Flagger;
 use Leet\Models\Feature;
@@ -27,15 +26,16 @@ class FlaggerServiceTest extends TestCase
 
         $feature = factory(Feature::class)->create();
 
-        try {
-            Flagger::flag($user, $feature->name);
-            $this->assertTrue(true);
-        } catch (Exception $e) {
-            $this->fail($e->getMessage());
-        }
+        Flagger::flag($user, $feature->name);
+
+        $this->seeInDatabase('flaggables', [
+            'feature_id' => $feature->id,
+            'flaggable_id' => $user->id,
+            'flaggable_type' => config('flagger.model'),
+        ]);
     }
 
-    public function testHasFeatureEnable()
+    public function testHasFeatureEnabled()
     {
         $user = factory(config('flagger.model'))->create();
 
@@ -43,7 +43,7 @@ class FlaggerServiceTest extends TestCase
 
         Flagger::flag($user, $feature->name);
 
-        $this->assertTrue(Flagger::hasFeatureEnable($user, $feature->name));
-        $this->assertFalse(Flagger::hasFeatureEnable($user, factory(Feature::class)->create()->name));
+        $this->assertTrue(Flagger::hasFeatureEnabled($user, $feature->name));
+        $this->assertFalse(Flagger::hasFeatureEnabled($user, factory(Feature::class)->create()->name));
     }
 }

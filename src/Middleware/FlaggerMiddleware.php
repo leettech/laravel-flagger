@@ -16,7 +16,7 @@ class FlaggerMiddleware
             throw new AuthenticationException;
         }
 
-        if (!Flagger::hasFeatureEnable($user, $feature)) {
+        if (!Flagger::hasFeatureEnabled($user, $feature)) {
             throw new AuthorizationException;
         }
 

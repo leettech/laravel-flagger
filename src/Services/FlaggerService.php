@@ -21,7 +21,7 @@ class FlaggerService
             ->attach($flaggable->getKey());
 	}
 
-	public function hasFeatureEnable(Model $flaggable, $feature)
+	public function hasFeatureEnabled(Model $flaggable, $feature)
 	{
         return $this->getFeatureByName($feature)
             ->flaggables()
