@@ -7,8 +7,8 @@ Flagger component is a package that has been designed to help you enable feature
 * [Configuration](#configuration)
 * [Usage](#usage)
     * [flag](#flag)
-    * [hasFeatureEnable](#hasFeatureEnable)
-    * [FlaggerMiddleware](#FlaggerMiddleware)
+    * [hasFeatureEnable](#hasfeatureenable)
+    * [FlaggerMiddleware](#flaggermiddleware)
 
 ## Version Compatibility
 
@@ -142,4 +142,13 @@ Route::get('notifications', 'NotificationsController@index')->middleware('flagge
 // or
 
 Route::group(['middleware' => 'flagger:notifications'], function () {});
+```
+
+### My Features
+
+Make sure to add ```Leet\Models\FlaggerTrait``` in your User Model:
+
+```php
+// returns the features i have access to
+$user->features;
 ```
