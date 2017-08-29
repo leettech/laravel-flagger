@@ -57,6 +57,12 @@ Also, add the Flagger facade to the aliases array in your app configuration file
 ],
 ```
 
+Then run migration to create tables features and flaggables:
+
+```sh
+php artisan migrate
+```
+
 Publish the package configuration:
 
 ```sh
