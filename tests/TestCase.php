@@ -27,6 +27,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('flagger.model', \Illuminate\Foundation\Auth\User::class);
+        $app['config']->set('flagger.model', \Tests\Stubs\User::class);
     }
 }
