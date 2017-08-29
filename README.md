@@ -6,6 +6,7 @@ Flagger component is a package that has been designed to help you enable feature
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Usage](#usage)
+    * [flag](#flag)
 
 ## Version Compatibility
 
@@ -70,3 +71,35 @@ php artisan vendor:publish --provider="Leet\Providers\FlaggerServiceProvider"
 ```
 
 And setup  what model it will be used in your config/flagger.php configuration file.
+
+## Usage
+
+### flag
+
+First, make sure you create yours features in features table. You can use the Model ```Leet\Models\Feature``` for this.
+
+After that use ```\Flagger::flag($flaggable, $feature)``` to attach one feature in to model:
+
+```php
+\Leet\Models\Feature::create([
+    'name' => 'notifications',
+    'description' => 'Notifications feature'
+]);
+
+$user = \App\User::first();
+
+\Flagger::flag($user, 'notifications');
+```
+
+You can also add ```Leet\Models\FlaggerTrait``` in User Model:
+
+```php
+class User extends Model
+{
+    use \Leet\Models\FlaggerTrait;
+}
+
+$user = \App\User::first();
+
+$user->flag('notifications');
+```
