@@ -56,3 +56,11 @@ Also, add the Flagger facade to the aliases array in your app configuration file
     'Flagger' => Leet\Facades\Flagger::class,
 ],
 ```
+
+Publish the package configuration:
+
+```sh
+php artisan vendor:publish --provider="Leet\Providers\FlaggerServiceProvider"
+```
+
+And setup  what model it will be used in your config/flagger.php configuration file.
