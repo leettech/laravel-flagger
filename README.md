@@ -132,7 +132,7 @@ Route::get('notifications', 'NotificationsController@index')->middleware('flagge
 or
 ```php
 Route::group(['middleware' => 'flagger:notifications'], function () {
-	Route::get('notifications', 'NotificationsController@index');
+    Route::get('notifications', 'NotificationsController@index');
     Route::post('notifications', 'NotificationsController@store')
 });
 ```
