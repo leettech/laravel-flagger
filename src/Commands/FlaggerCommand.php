@@ -9,31 +9,29 @@ class FlaggerCommand extends Command
 {
     protected $signature = 'flagger {feature} {ids*}';
 
-    protected $model;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->model = app(config('flagger.model'));
-    }
-
     public function handle()
     {
         $feature = $this->argument('feature');
 
         $ids = $this->argument('ids');
 
-        if (is_array($ids)) {
-            $this->model
-                ->whereIn('id', $ids)
-                ->each(function ($flaggable) use ($feature){
-                    $this->flag($flaggable, $feature);
-                });
-        } else {
-            $flaggable = $this->model->findOrFail($ids);
+        $this->getFlaggables($ids)
+            ->each(function ($flaggable) use ($feature) {
+                $this->flag($flaggable, $feature);
+            });
+    }
 
-            $this->flag($flaggable, $feature);
+    protected function getFlaggables($ids)
+    {
+        $model = app(config('flagger.model'));
+
+        $query = $model->newQuery();
+
+        if (is_array($ids)) {
+            return $query->whereIn('id', $ids);
         }
+
+        return $query->where('id', $ids);
     }
 
     protected function flag($flaggable, $feature)
