@@ -7,31 +7,37 @@ use Leet\Facades\Flagger;
 
 class FlaggerCommand extends Command
 {
-    protected $signature = 'flagger {feature} {ids*}';
+    protected $signature = 'flagger {feature} {source*}';
 
     public function handle()
     {
         $feature = $this->argument('feature');
 
-        $ids = $this->argument('ids');
+        $source = $this->argument('source');
 
-        $this->getFlaggables($ids)
+        $this->getFlaggables($source)
             ->each(function ($flaggable) use ($feature) {
                 $this->flag($flaggable, $feature);
             });
     }
 
-    protected function getFlaggables($ids)
+    protected function getFlaggables($source)
     {
         $model = app(config('flagger.model'));
 
         $query = $model->newQuery();
 
-        if (is_array($ids)) {
-            return $query->whereIn('id', $ids);
+        if (is_array($source)) {
+            return $query->whereIn('id', $source);
         }
 
-        return $query->where('id', $ids);
+        if (is_file($source)) {
+            $file = fopen($source, 'r');
+
+            return $query->whereIn('id', fgetcsv($file));
+        }
+
+        return $query->where('id', $source);
     }
 
     protected function flag($flaggable, $feature)
