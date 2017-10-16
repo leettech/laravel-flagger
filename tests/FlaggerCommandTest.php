@@ -19,6 +19,19 @@ class FlaggerCommandTest extends TestCase
         $this->users = factory(config('flagger.model'), 10)->create();
     }
 
+    /**
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function testFlagWithFeatureNotFound()
+    {
+        $user = $this->users->first();;
+
+        $this->artisan('flagger',[
+            'feature' => 'notifications',
+            'source' => $user->id,
+        ]);
+    }
+
     public function testFlagSingleUser()
     {
         $user = $this->users->first();;
