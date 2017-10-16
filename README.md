@@ -10,6 +10,7 @@ Flagger is a package that has been designed to help you on enabling feature flag
     * [hasFeatureEnabled](#hasfeatureenabled)
     * [FlaggerMiddleware](#flaggermiddleware)
     * [Getting enabled features for a model](#getting-enabled-features-for-a-model)
+* [Flagger command](#flagger-command)
 
 ## Version Compatibility
 
@@ -145,3 +146,17 @@ By adding ```Leet\Models\FlaggerTrait``` to your model, you are able to access i
 // returns the features a user have access to
 $user->features;
 ```
+
+## Flagger command
+
+The flagger command accepts an integer, array, or a path to a csv containing a list of integers and adds a flag to each of them:
+
+```sh
+php artisan flagger notifications 1
+// OR
+php artisan flagger notifications 1,2,3
+// OR
+php artisan flagger notifications users.csv
+```
+
+Be sure to create the flag before attempting to add it to any entity.
