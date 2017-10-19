@@ -3,6 +3,7 @@
 namespace Leet\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Leet\Commands\FlaggerCommand;
 
 class FlaggerServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,8 @@ class FlaggerServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //
+        $this->commands([
+            FlaggerCommand::class,
+        ]);
     }
 }
