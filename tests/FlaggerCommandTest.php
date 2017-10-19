@@ -28,7 +28,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => 'notifications',
-            'source' => $user->id,
+            'targets' => $user->id,
         ]);
     }
 
@@ -38,7 +38,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => $this->feature->name,
-            'source' => $user->id,
+            'targets' => $user->id,
         ]);
 
         $this->assertTrue(Flagger::hasFeatureEnabled($user, $this->feature->name));
@@ -48,12 +48,29 @@ class FlaggerCommandTest extends TestCase
     {
         $this->artisan('flagger',[
             'feature' => $this->feature->name,
-            'source' => $this->users->pluck('id'),
+            'targets' => $this->users->pluck('id'),
         ]);
 
         foreach ($this->users as $user) {
             $this->assertTrue(Flagger::hasFeatureEnabled($user, $this->feature->name));
         }
+    }
+
+    public function testFlagInvalidFlaggable()
+    {
+        $invalidId = 11;
+
+        $targets = $this->users
+            ->take(4)
+            ->pluck('id')
+            ->push($invalidId);
+
+        $this->artisan('flagger',[
+            'feature' => $this->feature->name,
+            'targets' => $targets,
+        ]);
+
+        $this->assertCount(4, $this->feature->flaggables);
     }
 
     public function testFlagMultipleUsersByCsvFile()
@@ -64,7 +81,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => $this->feature->name,
-            'source' => $path,
+            'targets' => $path,
         ]);
 
         foreach ($this->users as $user) {

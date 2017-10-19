@@ -9,7 +9,7 @@ class FlaggerCommand extends Command
 {
     protected $signature = 'flagger
                             {feature : The feature name}
-                            {source* : List of users to flag}';
+                            {targets* : List of users to flag}';
 
     protected $description = 'Flag users with a feature flag';
 
@@ -25,30 +25,35 @@ class FlaggerCommand extends Command
 
     protected function getFlaggables()
     {
-        $source = $this->getSource();
+        $flaggableIds = $this->getIdsFromArgument();
 
         $model = app(config('flagger.model'));
 
         $query = $model->newQuery();
 
-        if (is_array($source)) {
-            return $query->whereIn('id', $source);
+        if (is_array($flaggableIds)) {
+            return $query->whereIn('id', $flaggableIds);
         }
 
-        return $query->where('id', $source);
+        return $query->where('id', $flaggableIds);
     }
 
-    protected function getSource()
+    protected function getIdsFromArgument()
     {
-        $source = $this->argument('source');
+        $targets = $this->argument('targets');
 
-        if (is_string($source) && is_file($source)) {
-            $file = fopen($source, 'r');
-
-            return fgetcsv($file);
+        if (is_string($targets) && is_file($targets)) {
+            $targets = $this->getIdsFromCsv($targets);
         }
 
-        return $source;
+        return $targets;
+    }
+
+    protected function getIdsFromCsv($file)
+    {
+        return fgetcsv(
+            fopen($file, 'r')
+        );
     }
 
     protected function flag($flaggable, $feature)
