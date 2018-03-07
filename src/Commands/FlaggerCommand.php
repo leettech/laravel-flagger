@@ -42,8 +42,8 @@ class FlaggerCommand extends Command
     {
         $targets = $this->argument('targets');
 
-        if (is_string($targets) && is_file($targets)) {
-            $targets = $this->getIdsFromCsv($targets);
+        if ($csvPath = $this->getCsvPath($targets[0])) {
+            $targets = $this->getIdsFromCsv($csvPath);
         }
 
         return $targets;
@@ -59,5 +59,15 @@ class FlaggerCommand extends Command
     protected function flag($flaggable, $feature)
     {
         Flagger::flag($flaggable, $feature);
+    }
+
+    protected function getCsvPath($input)
+    {
+        return $this->isCsvFile($input) ? $input : null;
+    }
+
+    protected function isCsvFile($input)
+    {
+        return is_string($input) && is_file($input);
     }
 }

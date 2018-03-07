@@ -28,7 +28,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => 'notifications',
-            'targets' => $user->id,
+            'targets' => [$user->id],
         ]);
     }
 
@@ -38,7 +38,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => $this->feature->name,
-            'targets' => $user->id,
+            'targets' => [$user->id],
         ]);
 
         $this->assertTrue(Flagger::hasFeatureEnabled($user, $this->feature->name));
@@ -81,7 +81,7 @@ class FlaggerCommandTest extends TestCase
 
         $this->artisan('flagger',[
             'feature' => $this->feature->name,
-            'targets' => $path,
+            'targets' => [$path],
         ]);
 
         foreach ($this->users as $user) {
