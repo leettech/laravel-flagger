@@ -17,6 +17,7 @@ Flagger is a package that has been designed to help you on enabling feature flag
 Laravel   | Flagger
 :---------|:----------
  5.3.x    | 1.x.x
+ 5.4.x    | 2.x.x
 
 ## Installation
 
@@ -25,7 +26,7 @@ To install through composer, simply add the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "leettech/laravel-flagger": "~1.0"
+        "leettech/laravel-flagger": "~2.0"
     }
 }
 ```
@@ -37,7 +38,7 @@ And then run `composer install`.
 The above installation can also be simplified by using the following command:
 
 ```sh
-composer require "leettech/laravel-flagger=~1.0"
+composer require "leettech/laravel-flagger=~2.0"
 ```
 
 ## Configuration

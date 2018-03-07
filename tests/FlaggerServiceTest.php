@@ -28,7 +28,7 @@ class FlaggerServiceTest extends TestCase
 
         Flagger::flag($user, $feature->name);
 
-        $this->seeInDatabase('flaggables', [
+        $this->assertDatabaseHas('flaggables', [
             'feature_id' => $feature->id,
             'flaggable_id' => $user->id,
             'flaggable_type' => config('flagger.model'),

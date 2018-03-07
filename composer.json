@@ -7,7 +7,7 @@
         }
     ],
     "require-dev": {
-        "orchestra/testbench": "3.3.*",
+        "orchestra/testbench": "3.4.*",
         "phpunit/phpunit": "~5.0",
         "mockery/mockery": "0.9.*"
     },
