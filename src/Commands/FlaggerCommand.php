@@ -4,6 +4,7 @@ namespace Leet\Commands;
 
 use Illuminate\Console\Command;
 use Leet\Facades\Flagger;
+use Leet\Services\FlaggerService;
 
 class FlaggerCommand extends Command
 {
@@ -13,14 +14,17 @@ class FlaggerCommand extends Command
 
     protected $description = 'Flag users with a feature flag';
 
-    public function handle()
+    public function handle(FlaggerService $flagger)
     {
         $feature = $this->argument('feature');
 
-        $this->getFlaggables()
-            ->each(function ($flaggable) use ($feature) {
-                $this->flag($flaggable, $feature);
-            });
+        $flaggables = $this->getFlaggables();
+
+        if ($flaggables->count() > 1) {
+            return $flagger->flagMany($flaggables, $feature);
+        }
+
+        $flagger->flag($flaggables->first(), $feature);
     }
 
     protected function getFlaggables()
@@ -54,11 +58,6 @@ class FlaggerCommand extends Command
         return fgetcsv(
             fopen($file, 'r')
         );
-    }
-
-    protected function flag($flaggable, $feature)
-    {
-        Flagger::flag($flaggable, $feature);
     }
 
     protected function getCsvPath($input)
