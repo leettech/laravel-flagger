@@ -7,6 +7,7 @@ Flagger is a package that has been designed to help you on enabling feature flag
 * [Configuration](#configuration)
 * [Usage](#usage)
     * [flag](#flag)
+    * [flagMany](#flagMany)
     * [hasFeatureEnabled](#hasfeatureenabled)
     * [FlaggerMiddleware](#flaggermiddleware)
     * [Getting enabled features for a model](#getting-enabled-features-for-a-model)
@@ -105,6 +106,14 @@ $user = \App\User::first();
 $user->flag('notifications');
 ```
 
+### flagMany
+Use `\Flagger::flagMany($flaggables, $feature)` to attach a feature to a collection of models:
+
+```php
+$users = \App\User::all();
+\Flagger::flagMany($users, 'notifications');
+```
+
 ### hasFeatureEnabled
 
 Anywhere in the application, you can check if a user has access to a feature:
@@ -155,9 +164,11 @@ The flagger command accepts an integer, array, or a path to a csv containing a l
 ```sh
 php artisan flagger notifications 1
 // OR
-php artisan flagger notifications 1,2,3
+php artisan flagger notifications 1 2 3
 // OR
 php artisan flagger notifications users.csv
+// OR
+php artisan flagger notifications users.csv --chunk=100
 ```
 
 Be sure to create the flag before attempting to add it to any entity.

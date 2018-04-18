@@ -10,7 +10,8 @@ class FlaggerCommand extends Command
 {
     protected $signature = 'flagger
                             {feature : The feature name}
-                            {targets* : List of users to flag}';
+                            {targets* : List of users to flag}
+                            {--chunk=100 : Size of flaggables blocks that will run}';
 
     protected $description = 'Flag users with a feature flag';
 
@@ -20,11 +21,19 @@ class FlaggerCommand extends Command
 
         $flaggables = $this->getFlaggables();
 
-        if ($flaggables->count() > 1) {
-            return $flagger->flagMany($flaggables, $feature);
+        if ($flaggables->count() == 1) {
+            return $flagger->flag($flaggables->first(), $feature);
         }
 
-        $flagger->flag($flaggables->first(), $feature);
+        $progress = $this->output->createProgressBar($flaggables->count());
+
+        $flaggables->chunk($this->option('chunk'), function ($flaggables) use ($flagger, $feature, $progress){
+            $flagger->flagMany($flaggables, $feature);
+
+            $progress->advance($flaggables->count());
+        });
+
+        $progress->finish();
     }
 
     protected function getFlaggables()
