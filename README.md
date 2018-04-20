@@ -7,7 +7,7 @@ Flagger is a package that has been designed to help you on enabling feature flag
 * [Configuration](#configuration)
 * [Usage](#usage)
     * [flag](#flag)
-    * [flagMany](#flagMany)
+    * [flagMany](#flagmany)
     * [hasFeatureEnabled](#hasfeatureenabled)
     * [FlaggerMiddleware](#flaggermiddleware)
     * [Getting enabled features for a model](#getting-enabled-features-for-a-model)
