@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Flagger;
 use Leet\Models\Feature;
+use Illuminate\Support\Facades\DB;
 
 class FlaggerServiceTest extends TestCase
 {
@@ -33,6 +34,24 @@ class FlaggerServiceTest extends TestCase
             'flaggable_id' => $user->id,
             'flaggable_type' => config('flagger.model'),
         ]);
+    }
+
+    public function testFlagMany()
+    {
+        $users = factory(config('flagger.model'), 10)->create();
+
+        $feature = factory(Feature::class)->create();
+
+        Flagger::flagMany($users, $feature->name);
+
+        $expectedFlaggablesCount = DB::table('flaggables')
+            ->whereIn('flaggable_id', $users->pluck('id'))
+            ->count();
+
+        $this->assertEquals(
+            $users->count(),
+            $expectedFlaggablesCount
+        );
     }
 
     public function testHasFeatureEnabled()

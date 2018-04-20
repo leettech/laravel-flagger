@@ -16,23 +16,28 @@ class FlaggerService
 
     public function flag(Model $flaggable, $feature)
 	{
-		$this->getFeatureByName($feature)
-            ->flaggables()
+		$this->getFlaggableInstanceByFeatureName($feature)
             ->attach($flaggable->getKey());
 	}
 
+    public function flagMany($flaggables, $feature)
+    {
+        $this->getFlaggableInstanceByFeatureName($feature)
+            ->attach($flaggables->pluck('id'));
+    }
+
 	public function hasFeatureEnabled(Model $flaggable, $feature)
 	{
-        return $this->getFeatureByName($feature)
-            ->flaggables()
+        return $this->getFlaggableInstanceByFeatureName($feature)
             ->where('flaggable_id', $flaggable->getKey())
             ->exists();
 	}
 
-    protected function getFeatureByName($name)
+    protected function getFlaggableInstanceByFeatureName($name)
     {
         return $this->feature
             ->where('name', $name)
-            ->firstOrFail();
+            ->firstOrFail()
+            ->flaggables();
     }
 }
